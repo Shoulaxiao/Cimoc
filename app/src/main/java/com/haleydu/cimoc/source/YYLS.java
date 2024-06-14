@@ -26,8 +26,7 @@ import okhttp3.Request;
 
 public class YYLS extends MangaParser {
 
-    public static final int TYPE = 9;
-    public static final String DEFAULT_TITLE = "YYLS";
+    public static final SourceEnum TYPE = SourceEnum.YYLS;
 
     private String _cid = "";
     private String Baseurl = "http://8comic.se/";
@@ -37,7 +36,7 @@ public class YYLS extends MangaParser {
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -62,7 +61,7 @@ public class YYLS extends MangaParser {
                 String cover = null;
                 String update = "";
                 String author = null;
-                return new Comic(TYPE, cid, title, cover, update, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, author);
             }
         };
     }
@@ -145,7 +144,7 @@ public class YYLS extends MangaParser {
             String title = node.attr(".thumb > a", "title");
             String cover = node.src(".thumb > a img");
             String update = "";
-            list.add(new Comic(TYPE, cid, title, cover, update, null));
+            list.add(new Comic(TYPE.getCode(), cid, title, cover, update, null));
         }
         return list;
     }

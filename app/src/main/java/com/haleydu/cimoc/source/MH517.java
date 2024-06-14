@@ -31,15 +31,14 @@ import okhttp3.Request;
 
 public class MH517 extends MangaParser {
 
-    public static final int TYPE = 70;
-    public static final String DEFAULT_TITLE = "我要去漫画";
+    public static final SourceEnum TYPE = SourceEnum.MH517;
 
     public MH517(Source source) {
         init(source, null);
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -60,7 +59,7 @@ public class MH517 extends MangaParser {
                 final String cover = node.attr("a.ImgA > img", "src");
                 final String update = node.text("");
                 final String author = node.text("");
-                return new Comic(TYPE, cid, title, cover, update, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, author);
             }
         };
     }

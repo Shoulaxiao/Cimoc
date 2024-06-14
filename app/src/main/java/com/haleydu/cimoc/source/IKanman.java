@@ -30,8 +30,7 @@ public class IKanman extends MangaParser {
 
     // TODO 实测联通4G网络无法使用看漫画
 
-    public static final int TYPE = 0;
-    public static final String DEFAULT_TITLE = "漫画柜";
+    public static final SourceEnum TYPE = SourceEnum.IKanman;
 
     private String referer = "";
 
@@ -41,7 +40,7 @@ public class IKanman extends MangaParser {
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, false);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), false);
     }
 
     @Override
@@ -64,7 +63,7 @@ public class IKanman extends MangaParser {
                 String cover = node.attr("a.bcover > img", "src");
 //                String update = node.text("dl:eq(5) > dd");
 //                String author = node.text("dl:eq(2) > dd");
-                return new Comic(TYPE, cid, title, cover, "", "");
+                return new Comic(TYPE.getCode(), cid, title, cover, "", "");
             }
         };
     }
@@ -201,7 +200,7 @@ public class IKanman extends MangaParser {
                 cover = node.attr("a > img", "data-src");
             }
             String update = node.textWithSubstring("span.updateon", 4, 14);
-            list.add(new Comic(TYPE, cid, title, cover, update, null));
+            list.add(new Comic(TYPE.getCode(), cid, title, cover, update, null));
         }
         return list;
     }

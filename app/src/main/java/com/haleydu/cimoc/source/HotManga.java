@@ -32,12 +32,11 @@ import taobe.tec.jcc.JChineseConvertor;
 import static com.haleydu.cimoc.core.Manga.getResponseBody;
 
 public class HotManga extends MangaParser {
-    public static final int TYPE = 102;
-    public static final String DEFAULT_TITLE = "热辣漫画";
+    public static final SourceEnum TYPE = SourceEnum.HotManga;
     public static final String website = "https://m.manga2020.com/";
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null,TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     public HotManga(Source source) {
@@ -82,7 +81,7 @@ public class HotManga extends MangaParser {
                         String title = jChineseConvertor.t2s(object.getString("name"));
                         String cover = object.getString("cover");
                         String author = object.getJSONArray("author").getJSONObject(0).getString("name").trim();
-                        return new Comic(TYPE, cid, title, cover, null, author);
+                        return new Comic(TYPE.getCode(), cid, title, cover, null, author);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

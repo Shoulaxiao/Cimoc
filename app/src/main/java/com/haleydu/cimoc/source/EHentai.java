@@ -20,15 +20,14 @@ import okhttp3.Request;
  */
 public class EHentai extends MangaParser {
 
-    public static final int TYPE = 60;
-    public static final String DEFAULT_TITLE = "EHentai";
+    public static final SourceEnum TYPE = SourceEnum.EHentai;
 
     public EHentai(Source source) {
         init(source, null);
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -55,7 +54,7 @@ public class EHentai extends MangaParser {
                 String update = node.textWithSubstring("td:eq(1)", 0, 10);
                 String author = StringUtils.match("\\[(.*?)\\]", title, 1);
                 title = title.replaceFirst("\\[.*?\\]\\s*", "");
-                return new Comic(TYPE, cid, title, cover, update, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, author);
             }
         };
     }

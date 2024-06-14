@@ -32,8 +32,7 @@ import okhttp3.RequestBody;
 
 public class Hhxxee extends MangaParser {
 
-    public static final int TYPE = 59;
-    public static final String DEFAULT_TITLE = "997700";
+    public static final SourceEnum TYPE = SourceEnum.Hhxxee;
 
     public Hhxxee(Source source) {
         init(source, null);
@@ -43,7 +42,7 @@ public class Hhxxee extends MangaParser {
     private static final String[] servers = serverstr.split("\\|");
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -70,7 +69,7 @@ public class Hhxxee extends MangaParser {
                 String cover = node.src(".cListSlt > img");
                 String update = node.text(".cListh2 > span").substring(8);
                 String author = node.text(".cl1_2").substring(3);
-                return new Comic(TYPE, cid, title, cover, update, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, author);
             }
         };
     }
@@ -166,7 +165,7 @@ public class Hhxxee extends MangaParser {
             String cover = node.attr("div > img", "data-src");
             String update = node.text("dl:eq(5) > dd");
             String author = node.text("dl:eq(2) > dd");
-            list.add(new Comic(TYPE, cid, title, cover, update, author));
+            list.add(new Comic(TYPE.getCode(), cid, title, cover, update, author));
         }
         return list;
     }

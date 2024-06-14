@@ -28,15 +28,14 @@ import okhttp3.Request;
 
 public class Chuiyao extends MangaParser {
 
-    public static final int TYPE = 9;
-    public static final String DEFAULT_TITLE = "吹妖漫画";
+    public static final SourceEnum TYPE = SourceEnum.Chuiyao;
 
     public Chuiyao(Source source) {
         init(source, new Category());
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -56,7 +55,7 @@ public class Chuiyao extends MangaParser {
                 String cover = node.attr("div > img", "data-src");
                 String update = node.text("dl:eq(5) > dd");
                 String author = node.text("dl:eq(2) > dd");
-                return new Comic(TYPE, cid, title, cover, update, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, author);
             }
         };
     }
@@ -142,7 +141,7 @@ public class Chuiyao extends MangaParser {
             String cover = node.attr("div > img", "data-src");
             String update = node.text("dl:eq(5) > dd");
             String author = node.text("dl:eq(2) > dd");
-            list.add(new Comic(TYPE, cid, title, cover, update, author));
+            list.add(new Comic(TYPE.getCode(), cid, title, cover, update, author));
         }
         return list;
     }

@@ -34,11 +34,10 @@ import okhttp3.Request;
 
 public class ManHuaDB extends MangaParser {
 
-    public static final int TYPE = 46;
-    public static final String DEFAULT_TITLE = "漫画DB";
+    public static final SourceEnum TYPE = SourceEnum.ManHuaDB;
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     public ManHuaDB(Source source) {
@@ -73,7 +72,7 @@ public class ManHuaDB extends MangaParser {
                 String cid = node.hrefWithSplit(1);
                 String title = node.attr("title");
                 String cover = node.attr("img", "data-original");
-                return new Comic(TYPE, cid, title, cover, null, null);
+                return new Comic(TYPE.getCode(), cid, title, cover, null, null);
             }
         };
     }

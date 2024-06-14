@@ -31,15 +31,13 @@ import okhttp3.RequestBody;
 
 public class Cartoonmad extends MangaParser {
 
-    public static final int TYPE = 54;
-    public static final String DEFAULT_TITLE = "动漫狂";
-
+    public static final SourceEnum TYPE = SourceEnum.Cartoonmad;
     public Cartoonmad(Source source) {
         init(source, null);
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -65,7 +63,7 @@ public class Cartoonmad extends MangaParser {
                 String cover = "https://www.cartoonmad.com" + match.group(3);
 //                String update = node.text("dl:eq(5) > dd");
 //                String author = node.text("dl:eq(2) > dd");
-                return new Comic(TYPE, cid, title, cover, "", "");
+                return new Comic(TYPE.getCode(), cid, title, cover, "", "");
             }
         };
     }

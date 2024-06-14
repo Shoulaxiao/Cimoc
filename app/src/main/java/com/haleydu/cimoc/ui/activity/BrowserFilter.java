@@ -24,6 +24,7 @@ import com.haleydu.cimoc.source.ManHuaDB;
 import com.haleydu.cimoc.source.MiGu;
 import com.haleydu.cimoc.source.PuFei;
 import com.haleydu.cimoc.source.SixMH;
+import com.haleydu.cimoc.source.SourceEnum;
 import com.haleydu.cimoc.source.Tencent;
 import com.haleydu.cimoc.source.TuHao;
 import com.haleydu.cimoc.source.U17;
@@ -60,28 +61,28 @@ public class BrowserFilter extends BaseActivity {
     private List<Integer> registUrlListener() {
         List<Integer> list = new ArrayList<>();
 
-        list.add(Dmzjv2.TYPE);
-        list.add(BuKa.TYPE);
-        list.add(PuFei.TYPE);
-        list.add(Cartoonmad.TYPE);
-        list.add(Animx2.TYPE);
-        list.add(MH517.TYPE);
-        list.add(BaiNian.TYPE);
-        list.add(MiGu.TYPE);
-        list.add(Tencent.TYPE);
-        list.add(U17.TYPE);
-        list.add(MH57.TYPE);
-        list.add(MH50.TYPE);
-        list.add(DM5.TYPE);
-        list.add(IKanman.TYPE);
-        list.add(Hhxxee.TYPE);
-        list.add(BaiNian.TYPE);
-        list.add(ChuiXue.TYPE);
-        list.add(ManHuaDB.TYPE);
-        list.add(TuHao.TYPE);
-        list.add(YKMH.TYPE);
-        list.add(SixMH.TYPE);
-        list.add(HotManga.TYPE);
+        list.add(SourceEnum.Dmzjv2.getCode());
+        list.add(SourceEnum.BuKa.getCode());
+        list.add(SourceEnum.PuFei.getCode());
+        list.add(SourceEnum.Cartoonmad.getCode());
+        list.add(SourceEnum.Animx2.getCode());
+        list.add(SourceEnum.MH517.getCode());
+        list.add(SourceEnum.BaiNian.getCode());
+        list.add(SourceEnum.MiGu.getCode());
+        list.add(SourceEnum.Tencent.getCode());
+        list.add(SourceEnum.U17.getCode());
+        list.add(SourceEnum.MH57.getCode());
+        list.add(SourceEnum.MH50.getCode());
+        list.add(SourceEnum.DM5.getCode());
+        list.add(SourceEnum.IKanman.getCode());
+        list.add(SourceEnum.Hhxxee.getCode());
+        list.add(SourceEnum.BaiNian.getCode());
+        list.add(SourceEnum.ChuiXue.getCode());
+        list.add(SourceEnum.ManHuaDB.getCode());
+        list.add(SourceEnum.TuHao.getCode());
+        list.add(SourceEnum.YKMH.getCode());
+        list.add(SourceEnum.SixMH.getCode());
+        list.add(SourceEnum.HotManga.getCode());
         return list;
     }
 

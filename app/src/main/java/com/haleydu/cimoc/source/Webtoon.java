@@ -32,15 +32,14 @@ import okhttp3.RequestBody;
 
 public class Webtoon extends MangaParser {
 
-    public static final int TYPE = 6;
-    public static final String DEFAULT_TITLE = "Webtoon";
+    public static final SourceEnum TYPE = SourceEnum.Webtoon;
 
     public Webtoon(Source source) {
         init(source, new Category());
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -63,7 +62,7 @@ public class Webtoon extends MangaParser {
                 String title = node.text("div.row > div.info > p.subj > span");
                 String cover = node.src("div.row > div.pic > img");
                 String author = node.text("div.row > div.info > p.author");
-                return new Comic(TYPE, cid, title, cover, null, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, null, author);
             }
         };
     }
@@ -167,7 +166,7 @@ public class Webtoon extends MangaParser {
             String cid = node.hrefWithSplit(-1);
             String title = node.text("div.info > p.subj > span");
             String cover = node.attrWithSplit("div.pic", "style", "\\(|\\)", 1);
-            list.add(new Comic(TYPE, cid, title, cover, null, null));
+            list.add(new Comic(TYPE.getCode(), cid, title, cover, null, null));
         }
         return list;
     }

@@ -36,15 +36,14 @@ import static com.haleydu.cimoc.utils.HttpUtils.getSimpleMobileRequest;
  */
 public class Dmzj extends MangaParser {
 
-    public static final int TYPE = 1;
-    public static final String DEFAULT_TITLE = "动漫之家";
+    public static final SourceEnum TYPE = SourceEnum.Dmzj;
 
     public Dmzj(Source source) {
         init(source, new Category());
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -71,7 +70,7 @@ public class Dmzj extends MangaParser {
                         String cover = object.getString("comic_cover");
                         if (cover.startsWith("//")) cover = "https:" + cover;
                         String author = object.optString("comic_author");
-                        return new Comic(TYPE, cid, title, cover, null, author);
+                        return new Comic(TYPE.getCode(), cid, title, cover, null, author);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -197,7 +196,7 @@ public class Dmzj extends MangaParser {
                         Long time = object.has("last_updatetime") ? object.getLong("last_updatetime") * 1000 : null;
                         String update = time == null ? null : new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(time));
                         String author = object.optString("comic_author");
-                        list.add(new Comic(TYPE, cid, title, cover, update, author));
+                        list.add(new Comic(TYPE.getCode(), cid, title, cover, update, author));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

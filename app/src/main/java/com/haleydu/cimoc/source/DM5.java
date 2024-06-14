@@ -40,15 +40,14 @@ import okhttp3.RequestBody;
  */
 public class DM5 extends MangaParser {
 
-    public static final int TYPE = 5;
-    public static final String DEFAULT_TITLE = "动漫屋";
+    public static final SourceEnum TYPE = SourceEnum.DM5;
 
     public DM5(Source source) {
         init(source, new Category());
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -78,7 +77,7 @@ public class DM5 extends MangaParser {
                         for (int i = 0; array != null && i != array.length(); ++i) {
                             author = author.concat(array.optString(i));
                         }
-                        return new Comic(TYPE, cid, title, cover, update, author);
+                        return new Comic(TYPE.getCode(), cid, title, cover, update, author);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -250,7 +249,7 @@ public class DM5 extends MangaParser {
             String cover = StringUtils.match("\\((.*?)\\)", node.attr("p.mh-cover", "style"), 1);
             String author = node.textWithSubstring("p.author", 3);
             // String update = node.text("p.zl"); 要解析好麻烦
-            list.add(new Comic(TYPE, cid, title, cover, null, author));
+            list.add(new Comic(TYPE.getCode(), cid, title, cover, null, author));
         }
         return list;
     }

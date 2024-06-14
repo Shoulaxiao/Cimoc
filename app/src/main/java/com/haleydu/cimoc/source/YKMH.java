@@ -27,8 +27,7 @@ import okhttp3.Headers;
 import okhttp3.Request;
 
 public class YKMH extends MangaParser {
-    public static final int TYPE = 91;
-    public static final String DEFAULT_TITLE = "优酷漫画";
+    public static final SourceEnum TYPE = SourceEnum.YKMH;
     public final String Host = "https://www.ykmh.com/";
     public final String mHost = "https://wap.ykmh.com/";
 
@@ -37,7 +36,7 @@ public class YKMH extends MangaParser {
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -60,7 +59,7 @@ public class YKMH extends MangaParser {
                 String cover = node.attr("div.itemImg > a > img", "src");
                 String Update = node.text("p.txtItme > span.date");
                 String Author = node.text("p > a");
-                return new Comic(TYPE, cid, title, cover, Update, Author);
+                return new Comic(TYPE.getCode(), cid, title, cover, Update, Author);
             }
         };
     }
@@ -185,6 +184,6 @@ public class YKMH extends MangaParser {
 
     @Override
     public String getTitle() {
-        return DEFAULT_TITLE;
+        return TYPE.getDesc();
     }
 }

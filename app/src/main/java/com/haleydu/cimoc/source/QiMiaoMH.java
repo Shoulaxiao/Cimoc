@@ -33,8 +33,7 @@ import static com.haleydu.cimoc.core.Manga.getResponseBody;
 
 public class QiMiaoMH extends MangaParser {
 
-    public static final int TYPE = 56;
-    public static final String DEFAULT_TITLE = "奇妙漫画";
+    public static final SourceEnum TYPE = SourceEnum.QiMiaoMH;
     private static final String baseUrl = "https://www.qimiaomh.com";
 
     public QiMiaoMH(Source source) {
@@ -42,7 +41,7 @@ public class QiMiaoMH extends MangaParser {
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -63,7 +62,7 @@ public class QiMiaoMH extends MangaParser {
                 String cid = node.href("h2 > a");
                 String title = node.text("h2 > a");
                 String cover = node.attr("a > img", "data-src");
-                return new Comic(TYPE, cid, title, cover, null, null);
+                return new Comic(TYPE.getCode(), cid, title, cover, null, null);
             }
         };
     }

@@ -30,13 +30,12 @@ import okhttp3.RequestBody;
 
 public class SixMH extends MangaParser {
 
-    public static final int TYPE = 101;
-    public static final String DEFAULT_TITLE = "6漫画";
+    public static final SourceEnum TYPE = SourceEnum.SixMH;
     private static final String website = "www.sixmh6.com";
     private static String ChapterHtml;
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     public SixMH(Source source) {
@@ -73,7 +72,7 @@ public class SixMH extends MangaParser {
                 String cover = node.attr("a.pic > img", "src");
                 String update = node.text("li.updata > a > span");
 
-                return new Comic(TYPE, cid, title, cover, update, null);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, null);
             }
         };
     }

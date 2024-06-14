@@ -25,11 +25,10 @@ import okhttp3.Request;
 
 public class ChuiXue extends MangaParser {
 
-    public static final int TYPE = 69;
-    public static final String DEFAULT_TITLE = "吹雪漫画";
+    public static final SourceEnum TYPE = SourceEnum.ChuiXue;
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     public ChuiXue(Source source) {
@@ -68,7 +67,7 @@ public class ChuiXue extends MangaParser {
                 String title = node_cover.attr("img", "alt");
                 String cover = node_cover.attr("img", "_src");
                 String update = node.text("dl > dd > p:eq(0) > span");
-                return new Comic(TYPE, cid, title, cover, update, null);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, null);
             }
         };
     }

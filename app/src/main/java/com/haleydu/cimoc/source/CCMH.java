@@ -27,11 +27,10 @@ import okhttp3.RequestBody;
  */
 public class CCMH extends MangaParser {
 
-    public static final int TYPE = 23;
-    public static final String DEFAULT_TITLE = "CC漫画";
+    public static final SourceEnum TYPE = SourceEnum.CCMH;
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     public CCMH(Source source) {
@@ -74,7 +73,7 @@ public class CCMH extends MangaParser {
 //                String update = node.text(".itemTxt > p.txtItme:eq(3)");
 //                boolean finish = node.textWithSplit("a","\\s+",1) == "完结";
                 String author = node.textWithSplit("a", "\\s+", 2);
-                return new Comic(TYPE, cid, title, cover, "", author);
+                return new Comic(TYPE.getCode(), cid, title, cover, "", author);
             }
         };
     }

@@ -26,20 +26,19 @@ import okhttp3.Request;
  */
 public class CCTuku extends MangaParser {
 
-    public static final int TYPE = 3;
-    public static final String DEFAULT_TITLE = "CC图库";
+    public static final SourceEnum TYPE = SourceEnum.CCTuku;
 
     public CCTuku(Source source) {
         init(source, new Category());
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, false);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), false);
     }
 
     @Override
     public Request getSearchRequest(String keyword, int page) {
-        if(page == 1) {
+        if (page == 1) {
             String url = StringUtils.format("http://m.tuku.cc/search-%s/?language=1", keyword);
             return new Request.Builder().url(url).build();
         } else return null;
@@ -54,7 +53,7 @@ public class CCTuku extends MangaParser {
                 String cid = node.hrefWithSplit("a", 1);
                 String title = node.text("p.title");
                 String cover = node.src("a > img");
-                return new Comic(TYPE, cid, title, cover, null, null);
+                return new Comic(TYPE.getCode(), cid, title, cover, null, null);
             }
         };
     }
@@ -91,7 +90,7 @@ public class CCTuku extends MangaParser {
     public List<Chapter> parseChapter(String html, Comic comic, Long sourceComic) {
         List<Chapter> list = new LinkedList<>();
         Node body = new Node(html);
-        int i=0;
+        int i = 0;
         for (Node node : body.list("#chapter > div > div > ul > li > a")) {
             String title = node.text();
             String path = node.hrefWithSplit(2);
@@ -170,7 +169,7 @@ public class CCTuku extends MangaParser {
                 String cover = node.src("div:eq(0) > a > img");
                 String update = node.text("div:eq(1) > div:eq(1) > dl:eq(3) > dd > font");
                 String author = node.text("div:eq(1) > div:eq(1) > dl:eq(1) > dd > a");
-                list.add(new Comic(TYPE, cid, title, cover, update, author));
+                list.add(new Comic(TYPE.getCode(), cid, title, cover, update, author));
             }
         }
         return list;

@@ -24,12 +24,11 @@ import okhttp3.Request;
 
 public class TuHao extends MangaParser {
 
-    public static final int TYPE = 24;
-    public static final String DEFAULT_TITLE = "土豪漫画";
+    public static final SourceEnum TYPE = SourceEnum.TuHao;
     private static final String website = "tuhao456.com";
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     public TuHao(Source source) {
@@ -66,7 +65,7 @@ public class TuHao extends MangaParser {
                 String cover = node.attr("a.pic > img", "src");
                 String update = node.text("li.updata > a > span");
 
-                return new Comic(TYPE, cid, title, cover, update, null);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, null);
             }
         };
     }

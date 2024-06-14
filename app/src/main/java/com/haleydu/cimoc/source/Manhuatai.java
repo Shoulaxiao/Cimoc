@@ -37,12 +37,11 @@ import okhttp3.Request;
 
 public class Manhuatai extends MangaParser {
 
-    public static final int TYPE = 49;
-    public static final String DEFAULT_TITLE = "漫画台";
+    public static final SourceEnum TYPE = SourceEnum.Manhuatai;
     public static final String baseUrl = "https://m.manhuatai.com";
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     public Manhuatai(Source source) {
@@ -69,7 +68,7 @@ public class Manhuatai extends MangaParser {
                 String cover = "https://image.yqmh.com/mh/" + object.getString("comic_id") + ".jpg-300x400.webp";
                 String author = null;
                 String update = null;
-                return new Comic(TYPE, cid, title, cover, update, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, author);
             }
         };
     }
@@ -231,7 +230,7 @@ public class Manhuatai extends MangaParser {
                 author = node1.text("div.jshtml > ul > li:nth-child(3)").substring(3);
                 update = node1.text("div.jshtml > ul > li:nth-child(5)").substring(3);
             }
-            list.add(new Comic(TYPE, cid, title, cover, update, author));
+            list.add(new Comic(TYPE.getCode(), cid, title, cover, update, author));
         }
         return list;
     }

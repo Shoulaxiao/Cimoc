@@ -20,12 +20,10 @@ import okhttp3.Request;
 
 public class Null extends MangaParser {
 
-    public static final int TYPE = -1;
-    public static final String DEFAULT_TITLE = "(null)";
-    public static final String DEFAULT_SERVER = null;
+    public static final SourceEnum TYPE = SourceEnum.NULL;
 
     public Null() {
-        mTitle = DEFAULT_TITLE;
+        mTitle = TYPE.getDesc();
     }
 
     @Override

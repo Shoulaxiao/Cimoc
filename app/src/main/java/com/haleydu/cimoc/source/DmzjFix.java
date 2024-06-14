@@ -30,15 +30,14 @@ import okhttp3.Headers;
 import okhttp3.Request;
 
 public class DmzjFix extends MangaParser {
-    public static final int TYPE = 100;
-    public static final String DEFAULT_TITLE = "动漫之家v2Fix";
+    public static final SourceEnum TYPE = SourceEnum.DmzjFix;
 
     public DmzjFix(Source source) {
         init(source, null);
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -77,7 +76,7 @@ public class DmzjFix extends MangaParser {
                         String author = object.optString("authors");
                         long time = Long.parseLong(object.getString("last_updatetime")) * 1000;
                         String update = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(time));
-                        return new Comic(TYPE, cid, title, cover, update, author);
+                        return new Comic(TYPE.getCode(), cid, title, cover, update, author);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

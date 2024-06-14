@@ -32,8 +32,7 @@ import okhttp3.Request;
 
 public class Mangakakalot extends MangaParser {
 
-    public static final int TYPE = 44;
-    public static final String DEFAULT_TITLE = "Mangakakalot";
+    public static final SourceEnum TYPE = SourceEnum.Mangakakalot;
     private static String cidUrl;
 
     public Mangakakalot(Source source) {
@@ -41,7 +40,7 @@ public class Mangakakalot extends MangaParser {
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     /**
@@ -74,7 +73,7 @@ public class Mangakakalot extends MangaParser {
                 String cover = node.src("img");
                 String update = node.text("div.story_item_right > span:eq(4)").replace("Updated :","").trim();
                 String author = node.text("div.story_item_right > span:eq(3)").replace("Author(s) :","").trim();
-                return new Comic(TYPE, cid, title, cover, update, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, author);
             }
         };
     }
@@ -218,7 +217,7 @@ public class Mangakakalot extends MangaParser {
                 String cover = node.src("a > img");
                 String update = node.list("a").get(2).text();
                 String author = node.text("div:eq(1) > div:eq(1) > dl:eq(1) > dd > a");
-                list.add(new Comic(TYPE, cid, title, cover, update, author));
+                list.add(new Comic(TYPE.getCode(), cid, title, cover, update, author));
             }
         }
         return list;

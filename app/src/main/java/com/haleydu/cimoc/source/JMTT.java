@@ -27,12 +27,11 @@ import okhttp3.Request;
 
 public class JMTT extends MangaParser {
 
-    public static final int TYPE = 72;
-    public static final String DEFAULT_TITLE = "禁漫天堂";
+    public static final SourceEnum TYPE  =SourceEnum.JMTT;
     public static final String baseUrl = "https://18comic1.one/"; //https://cm365.xyz/7MJX9t
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, false);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), false);
     }
 
     public JMTT(Source source) {
@@ -57,7 +56,7 @@ public class JMTT extends MangaParser {
                 final String cover = node.attr("div.thumb-overlay > a > img", "data-original");
                 final String update = node.text("div.video-views");
                 final String author = "";
-                return new Comic(TYPE, cid, title, cover, update, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, author);
             }
         };
     }

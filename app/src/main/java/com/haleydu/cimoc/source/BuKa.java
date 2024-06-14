@@ -31,15 +31,14 @@ import okhttp3.RequestBody;
 
 public class BuKa extends MangaParser {
 
-    public static final int TYPE = 52;
-    public static final String DEFAULT_TITLE = "布卡漫画";
+    public static final SourceEnum TYPE = SourceEnum.BuKa;
 
     public BuKa(Source source) {
         init(source, null);
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -70,7 +69,7 @@ public class BuKa extends MangaParser {
                         String title = object.getString("name");
                         String cover = object.getString("logo");
                         String author = object.getString("author");
-                        return new Comic(TYPE, cid, title, cover, null, author);
+                        return new Comic(TYPE.getCode(), cid, title, cover, null, author);
                     } catch (Exception ex) {
                         return null;
                     }
@@ -123,7 +122,7 @@ public class BuKa extends MangaParser {
     @Override
     public List<Chapter> parseChapter(String html, Comic comic, Long sourceComic) {
         List<Chapter> list = new LinkedList<>();
-        int i=0;
+        int i = 0;
         for (Node node : new Node(html).list("div.chapter-center > a")) {
             String title = node.text();
             String path = node.href().split("/")[3];
@@ -142,7 +141,7 @@ public class BuKa extends MangaParser {
     }
 
     @Override
-    public List<ImageUrl> parseImages(String html,Chapter chapter) {
+    public List<ImageUrl> parseImages(String html, Chapter chapter) {
         List<ImageUrl> list = new LinkedList<>();
         Matcher m = Pattern.compile("<img class=\"lazy\" data-original=\"(http.*?jpg)\" />").matcher(html);
         if (m.find()) {
@@ -151,7 +150,7 @@ public class BuKa extends MangaParser {
                 do {
                     Long comicChapter = chapter.getId();
                     Long id = Long.parseLong(comicChapter + "000" + i);
-                    list.add(new ImageUrl(id,comicChapter,++i, StringUtils.match("http.*jpg", m.group(0), 0), false));
+                    list.add(new ImageUrl(id, comicChapter, ++i, StringUtils.match("http.*jpg", m.group(0), 0), false));
                 } while (m.find());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -180,7 +179,7 @@ public class BuKa extends MangaParser {
             String cover = node.attr("div > img", "data-src");
             String update = node.text("dl:eq(5) > dd");
             String author = node.text("dl:eq(2) > dd");
-            list.add(new Comic(TYPE, cid, title, cover, update, author));
+            list.add(new Comic(TYPE.getCode(), cid, title, cover, update, author));
         }
         return list;
     }

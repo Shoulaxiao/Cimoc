@@ -35,15 +35,14 @@ import static com.haleydu.cimoc.utils.DecryptionUtils.evalDecrypt;
 
 public class Tencent extends MangaParser {
 
-    public static final int TYPE = 51;
-    public static final String DEFAULT_TITLE = "腾讯动漫";
+    public static final SourceEnum TYPE = SourceEnum.Tencent;
 
     public Tencent(Source source) {
         init(source, null);
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -66,7 +65,7 @@ public class Tencent extends MangaParser {
                 String cover = node.attr(".cover-image", "src");
                 String update = node.text(".comic-update");
                 String author = "UNKNOWN";
-                return new Comic(TYPE, cid, title, cover, update, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, author);
             }
         };
     }
@@ -193,7 +192,7 @@ public class Tencent extends MangaParser {
             String cover = node.attr("div > img", "data-src");
             String update = node.text("dl:eq(5) > dd");
             String author = node.text("dl:eq(2) > dd");
-            list.add(new Comic(TYPE, cid, title, cover, update, author));
+            list.add(new Comic(TYPE.getCode(), cid, title, cover, update, author));
         }
         return list;
     }

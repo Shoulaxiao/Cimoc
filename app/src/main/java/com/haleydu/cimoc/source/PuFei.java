@@ -32,15 +32,14 @@ import okhttp3.Request;
 
 public class PuFei extends MangaParser {
 
-    public static final int TYPE = 50;
-    public static final String DEFAULT_TITLE = "扑飞漫画";
+    public static final SourceEnum TYPE = SourceEnum.PuFei;
 
     public PuFei(Source source) {
         init(source, new PuFei.Category());
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -65,7 +64,7 @@ public class PuFei extends MangaParser {
                 String cover = node_a.attr("div > img", "data-src");
                 String author = node_a.text("dl > dd");
                 String update = node.text("dl:eq(4) > dd");
-                return new Comic(TYPE, cid, title, cover, update, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, author);
             }
         };
     }
@@ -158,7 +157,7 @@ public class PuFei extends MangaParser {
             String cover = node.attr("a > div > img", "data-src");
             String update = node.text("dl:eq(4) > dd");
             String author = node.text("a > dl:eq(2) > dd");
-            list.add(new Comic(TYPE, cid, title, cover, update, author));
+            list.add(new Comic(TYPE.getCode(), cid, title, cover, update, author));
         }
         return list;
     }

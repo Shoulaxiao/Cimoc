@@ -32,8 +32,7 @@ import okhttp3.RequestBody;
 
 public class QiManWu extends MangaParser {
 
-    public static final int TYPE = 53;
-    public static final String DEFAULT_TITLE = "奇漫屋";
+    public static final SourceEnum TYPE = SourceEnum.QiManWu;
     public static final String baseUrl = "http://qiman6.com";
 
     public QiManWu(Source source) {
@@ -41,7 +40,7 @@ public class QiManWu extends MangaParser {
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -69,7 +68,7 @@ public class QiManWu extends MangaParser {
                 String title = node.text("p.comic-name");
                 String cover = node.attr("img", "src");
                 String author = node.text("p.comic-author");
-                return new Comic(TYPE, cid, title, cover, null, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, null, author);
             }
         };
     }

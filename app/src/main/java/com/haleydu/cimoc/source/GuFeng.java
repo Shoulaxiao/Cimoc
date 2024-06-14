@@ -25,11 +25,10 @@ import okhttp3.Request;
 
 public class GuFeng extends MangaParser {
 
-    public static final int TYPE = 25;
-    public static final String DEFAULT_TITLE = "古风漫画";
+    public static final SourceEnum TYPE = SourceEnum.GuFeng;
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     public GuFeng(Source source) {
@@ -66,7 +65,7 @@ public class GuFeng extends MangaParser {
                 String update = node.text("div.itemTxt > p:eq(3) > span.date");
                 String author = node.text("div.itemTxt > p:eq(1)");
 
-                return new Comic(TYPE, cid, title, cover, update, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, author);
             }
         };
     }
@@ -96,7 +95,7 @@ public class GuFeng extends MangaParser {
     @Override
     public List<Chapter> parseChapter(String html, Comic comic, Long sourceComic) {
         List<Chapter> list = new LinkedList<>();
-        int i=0;
+        int i = 0;
         for (Node node : new Node(html).list("ul[id^=chapter-list] > li > a")) {
             String title = node.text();
             String path = node.hrefWithSplit(2);

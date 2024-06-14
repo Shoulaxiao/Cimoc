@@ -30,8 +30,7 @@ import okhttp3.Request;
 
 public class MH57 extends MangaParser {
 
-    public static final int TYPE = 8;
-    public static final String DEFAULT_TITLE = "57漫画";
+    public static final SourceEnum TYPE = SourceEnum.MH57;
 
     private static final String[] servers = {
             "http://images.lancaier.com"
@@ -42,7 +41,7 @@ public class MH57 extends MangaParser {
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -71,7 +70,7 @@ public class MH57 extends MangaParser {
                 String cover = node.attr("a:eq(0) > div.thumb > img", "data-src");
                 String update = node.text("dl:eq(4) > dd");
                 String author = node.text("dl:eq(1) > a > dd");
-                return new Comic(TYPE, cid, title, cover, update, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, author);
             }
         };
     }
@@ -178,7 +177,7 @@ public class MH57 extends MangaParser {
             String title = node.attr("a", "title");
             String cover = node.attr("a > img", "data-src");
             String update = node.textWithSubstring("span.updateon", 4, 14);
-            list.add(new Comic(TYPE, cid, title, cover, update, null));
+            list.add(new Comic(TYPE.getCode(), cid, title, cover, update, null));
         }
         return list;
     }

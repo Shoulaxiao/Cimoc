@@ -36,12 +36,11 @@ import okhttp3.Request;
  */
 public class MH50 extends MangaParser {
 
-    public static final int TYPE = 80;
-    public static final String DEFAULT_TITLE = "漫画堆";
+    public static final SourceEnum TYPE = SourceEnum.MH50;
     public static final String  baseUrl = "https://m.manhuadai.com";
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     public MH50(Source source) {
@@ -69,7 +68,7 @@ public class MH50 extends MangaParser {
                 if (cover.startsWith("//")) cover = "https:" + cover;
                 String update = node.text(".itemTxt > p.txtItme:eq(3)");
                 String author = node.text(".itemTxt > p.txtItme:eq(1)");
-                return new Comic(TYPE, cid, title, cover, update, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, author);
             }
         };
     }
@@ -213,7 +212,7 @@ public class MH50 extends MangaParser {
                 String cover = node.src("a.ImgA img");
                 if (cover.startsWith("//")) cover = "https:" + cover;
                 String update = node.text(".info");
-                list.add(new Comic(TYPE, cid, title, cover, update, null));
+                list.add(new Comic(TYPE.getCode(), cid, title, cover, update, null));
             }
         }
         return list;

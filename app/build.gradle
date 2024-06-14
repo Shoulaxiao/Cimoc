@@ -5,17 +5,19 @@ apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.huawei.agconnect'
 
-def buildVersion = 329
+def buildVersion = 330
 def version = "v1.5.2"
 
 def cmdGetTagname = 'git describe --tags'
-def cmdGetCommitNums = 'git rev-list HEAD --count'
-if(System.getenv("TRAVIS_BUILD_NUMBER") != null){
+def cmdGetCommitNums = "git rev-list HEAD --count"
+if (System.getenv("TRAVIS_BUILD_NUMBER") != null) {
     buildVersion = System.getenv("TRAVIS_BUILD_NUMBER").trim().toInteger()
     version = cmdGetTagname.execute().text.trim()
-}
-else {
-    buildVersion = cmdGetCommitNums.execute().text.trim().toInteger()
+} else {
+    def wycount = cmdGetCommitNums.execute().text.trim()
+    if (wycount !=null && !wycount .equals("")){
+        buildVersion = wycount.toInteger()
+    }
     cmdGetTagname = 'git describe --abbrev=0'
 
     version = cmdGetTagname.execute().text.trim()
@@ -68,11 +70,12 @@ android {
             shrinkResources false
             zipAlignEnabled false
             signingConfig signingConfigs.debug
+            buildConfigField("Integer", "SOURCE", "14")
         }
 
         android.applicationVariants.all { variant ->
             variant.outputs.all {
-                outputFileName = "Cimoc_"+version+".apk"
+                outputFileName = "Cimoc_" + version + ".apk"
             }
         }
     }

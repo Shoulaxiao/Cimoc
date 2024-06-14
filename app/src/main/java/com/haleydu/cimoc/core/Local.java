@@ -8,6 +8,7 @@ import com.haleydu.cimoc.model.ImageUrl;
 import com.haleydu.cimoc.model.Task;
 import com.haleydu.cimoc.saf.DocumentFile;
 import com.haleydu.cimoc.source.Locality;
+import com.haleydu.cimoc.source.SourceEnum;
 import com.haleydu.cimoc.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -146,7 +147,7 @@ public class Local {
     }
 
     private static Comic buildComic(DocumentFile dir, String cover) {
-        return new Comic(null, Locality.TYPE, dir.getUri().toString(), dir.getName(), cover,
+        return new Comic(null, SourceEnum.Locality.getCode(), dir.getUri().toString(), dir.getName(), cover,
                 false, true, null, null, null, null, null, null, null, null, null, null, null);
     }
 

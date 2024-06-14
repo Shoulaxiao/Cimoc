@@ -31,12 +31,11 @@ import okhttp3.Request;
 
 public class MH160 extends MangaParser {
 
-    public static final int TYPE = 28;
-    public static final String DEFAULT_TITLE = "漫画160";
+    public static final SourceEnum TYPE = SourceEnum.MH160;
     private static final String baseUrl = "https://www.mh160.xyz";
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     public MH160(Source source) {
@@ -66,7 +65,7 @@ public class MH160 extends MangaParser {
                 String title = node.text("h4").trim();
                 String cid = node.attr(".mh-works-info > a", "href");
                 String update = node.text(".mh-up-time.fr").replace("最后更新时间：","");
-                return new Comic(TYPE, cid, title, cover, update, null);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, null);
             }
         };
     }

@@ -25,8 +25,7 @@ import okhttp3.Request;
  */
 public class HHAAZZ extends MangaParser {
 
-    public static final int TYPE = 2;
-    public static final String DEFAULT_TITLE = "汗汗酷漫";
+    public static final SourceEnum TYPE = SourceEnum.HHAAZZ;
     public static String baseUrl = "";
     public static String sw = "";
 
@@ -37,7 +36,7 @@ public class HHAAZZ extends MangaParser {
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -58,7 +57,7 @@ public class HHAAZZ extends MangaParser {
                 final String cid = node.hrefWithSplit("a", 1);
                 final String title = node.attr("a", "title");
                 final String cover = node.src("a > img");
-                return new Comic(TYPE, cid, title, cover, null, null);
+                return new Comic(TYPE.getCode(), cid, title, cover, null, null);
             }
         };
     }
@@ -239,7 +238,7 @@ public class HHAAZZ extends MangaParser {
             String cover = node.src("img");
             String update = node.textWithSubstring("div.con > p > span", 0, 10);
             String author = node.text("div.con > p:eq(1)");
-            list.add(new Comic(TYPE, cid, title, cover, update, author));
+            list.add(new Comic(TYPE.getCode(), cid, title, cover, update, author));
         }
         return list;
     }

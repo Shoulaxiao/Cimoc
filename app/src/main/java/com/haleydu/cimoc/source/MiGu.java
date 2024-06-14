@@ -38,8 +38,7 @@ import okhttp3.Response;
 
 public class MiGu extends MangaParser {
 
-    public static final int TYPE = 58;
-    public static final String DEFAULT_TITLE = "咪咕漫画";
+    public static final SourceEnum TYPE = SourceEnum.MiGu;
     private String _cid, _path;
 
     public MiGu(Source source) {
@@ -47,7 +46,7 @@ public class MiGu extends MangaParser {
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -74,7 +73,7 @@ public class MiGu extends MangaParser {
         return new RegexIterator(m) {
             @Override
             protected Comic parse(Matcher match) {
-                return new Comic(TYPE, match.group(1), match.group(2), match.group(3), "", "");
+                return new Comic(TYPE.getCode(), match.group(1), match.group(2), match.group(3), "", "");
             }
         };
     }

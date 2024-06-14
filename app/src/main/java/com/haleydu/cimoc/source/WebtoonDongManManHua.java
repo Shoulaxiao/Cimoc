@@ -31,8 +31,7 @@ import static com.haleydu.cimoc.core.Manga.getResponseBody;
 
 public class WebtoonDongManManHua extends MangaParser {
 
-    public static final int TYPE = 11;
-    public static final String DEFAULT_TITLE = "咚漫漫画";
+    public static final SourceEnum TYPE = SourceEnum.WebtoonDongManManHua;
     public static final String baseUrl = "https://www.dongmanmanhua.cn";
 
     public WebtoonDongManManHua(Source source) {
@@ -40,7 +39,7 @@ public class WebtoonDongManManHua extends MangaParser {
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -62,7 +61,7 @@ public class WebtoonDongManManHua extends MangaParser {
                 String title = node.text("div.info > p.subj");
                 String cover = node.src("img");
                 String author = node.text("div.info > p.author");
-                return new Comic(TYPE, cid, title, cover, null, author);
+                return new Comic(TYPE.getCode(), cid, title, cover, null, author);
             }
         };
     }
@@ -215,7 +214,7 @@ public class WebtoonDongManManHua extends MangaParser {
             String cid = node.hrefWithSplit(-1);
             String title = node.text("div.info > p.subj > span");
             String cover = node.attrWithSplit("div.pic", "style", "\\(|\\)", 1);
-            list.add(new Comic(TYPE, cid, title, cover, null, null));
+            list.add(new Comic(TYPE.getCode(), cid, title, cover, null, null));
         }
         return list;
     }

@@ -27,15 +27,14 @@ import okhttp3.Request;
 
 public class Animx2 extends MangaParser {
 
-    public static final int TYPE = 55;
-    public static final String DEFAULT_TITLE = "2animx";
+    public static final SourceEnum TYPE = SourceEnum.Animx2;
 
     public Animx2(Source source) {
         init(source, null);
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -55,7 +54,7 @@ public class Animx2 extends MangaParser {
                 String title = node.text("a > div.tit");
                 String cover = "http://www.2animx.com" + node.attr("a > img", "src");
                 String update = node.text("a > font");
-                return new Comic(TYPE, cid, title, cover, update, "");
+                return new Comic(TYPE.getCode(), cid, title, cover, update, "");
             }
         };
     }
@@ -94,7 +93,7 @@ public class Animx2 extends MangaParser {
     @Override
     public List<Chapter> parseChapter(String html, Comic comic, Long sourceComic) {
         List<Chapter> list = new LinkedList<>();
-        int i=0;
+        int i = 0;
         for (Node node : new Node(html).list("div#oneCon2 > ul > li")) {
             String title = node.attr("a", "title");
             Matcher mTitle = Pattern.compile("\\d+").matcher(title);

@@ -26,12 +26,11 @@ import okhttp3.Request;
 
 public class MHLove extends MangaParser {
 
-    public static final int TYPE = 27;
-    public static final String DEFAULT_TITLE = "漫画Love";
+    public static final SourceEnum TYPE = SourceEnum.MHLove;
     public static final String baseUrl = "http://www.php06.com";
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, false);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), false);
     }
 
     public MHLove(Source source) {
@@ -60,7 +59,7 @@ public class MHLove extends MangaParser {
                 String title = node.text("h4").trim();
                 String cid = node.attr(".mh-works-info > a", "href");
                 String update = node.text(".mh-up-time.fr").replace("最后更新时间：","");
-                return new Comic(TYPE, cid, title, cover, update, null);
+                return new Comic(TYPE.getCode(), cid, title, cover, update, null);
             }
         };
     }

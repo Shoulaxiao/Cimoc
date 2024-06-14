@@ -20,11 +20,10 @@ import okhttp3.Request;
 
 public class Locality extends MangaParser {
 
-    public static final int TYPE = -2;
-    public static final String DEFAULT_TITLE = "本地漫画";
+    public static final SourceEnum TYPE = SourceEnum.Locality;
 
     public Locality() {
-        mTitle = DEFAULT_TITLE;
+        mTitle = TYPE.getDesc();
     }
 
     @Override

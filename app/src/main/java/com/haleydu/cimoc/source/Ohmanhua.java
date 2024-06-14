@@ -30,8 +30,7 @@ import okhttp3.Request;
 
 public class Ohmanhua extends MangaParser {
 
-    public static final int TYPE = 71;
-    public static final String DEFAULT_TITLE = "oh漫画";
+    public static final SourceEnum TYPE = SourceEnum.Ohmanhua;
     private static final String baseUrl = "https://www.cocomanhua.com";
     private static final String serverUrl = "https://img.cocomanhua.com/comic/";
 
@@ -40,7 +39,7 @@ public class Ohmanhua extends MangaParser {
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     @Override
@@ -70,7 +69,7 @@ public class Ohmanhua extends MangaParser {
                 if (!update.contains("更新")){
                     update = node.text("dd > ul > li:eq(5)");
                 }
-                return new Comic(TYPE, cid, title, cover,
+                return new Comic(TYPE.getCode(), cid, title, cover,
                         update.replace("更新",""),
                         author.replace("作者",""));
             }

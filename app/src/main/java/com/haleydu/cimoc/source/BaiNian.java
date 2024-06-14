@@ -27,15 +27,14 @@ import okhttp3.RequestBody;
 
 public class BaiNian extends MangaParser {
 
-    public static final int TYPE = 13;
-    public static final String DEFAULT_TITLE = "百年漫画";
+    public static final SourceEnum TYPE = SourceEnum.BaiNian;
 
     public BaiNian(Source source) {
         init(source, null);
     }
 
     public static Source getDefaultSource() {
-        return new Source(null, DEFAULT_TITLE, TYPE, true);
+        return new Source(null, TYPE.getDesc(), TYPE.getCode(), true);
     }
 
     // 这里一直无法弄好
@@ -67,7 +66,7 @@ public class BaiNian extends MangaParser {
                 String title = node.attr("a.vbox_t", "title");
                 String cid = node.attr("a.vbox_t", "href");
                 String cover = node.attr("a.vbox_t > mip-img", "src");
-                return new Comic(TYPE, cid, title, cover, null, null);
+                return new Comic(TYPE.getCode(), cid, title, cover, null, null);
             }
         };
     }
@@ -104,7 +103,7 @@ public class BaiNian extends MangaParser {
     @Override
     public List<Chapter> parseChapter(String html, Comic comic, Long sourceComic) {
         List<Chapter> list = new LinkedList<>();
-        int i=0;
+        int i = 0;
         for (Node node : new Node(html).list("div.tabs_block > ul > li > a")) {
             String title = node.text();
             String path = node.href();
@@ -120,7 +119,7 @@ public class BaiNian extends MangaParser {
     }
 
     @Override
-    public List<ImageUrl> parseImages(String html,Chapter chapter) {
+    public List<ImageUrl> parseImages(String html, Chapter chapter) {
         List<ImageUrl> list = new LinkedList<>();
         String host = StringUtils.match("src=\"(.*?)\\/upload", html, 1);
         String path_str = StringUtils.match("z_img=\'\\[(.*?)\\]\'", html, 1);
@@ -128,10 +127,10 @@ public class BaiNian extends MangaParser {
             try {
                 String[] array = path_str.split(",");
                 for (int i = 0; i != array.length; ++i) {
-                    String path = array[i].replace("\"","").replace("\\","");
+                    String path = array[i].replace("\"", "").replace("\\", "");
                     Long comicChapter = chapter.getId();
                     Long id = Long.parseLong(comicChapter + "000" + i);
-                    list.add(new ImageUrl(id,comicChapter,i + 1, host+"/"+path, false));
+                    list.add(new ImageUrl(id, comicChapter, i + 1, host + "/" + path, false));
                 }
             } catch (Exception e) {
                 e.printStackTrace();

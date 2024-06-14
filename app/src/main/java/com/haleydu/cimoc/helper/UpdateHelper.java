@@ -54,6 +54,8 @@ public class UpdateHelper {
      */
     private static void initSource(DaoSession session) {
         List<Source> list = new ArrayList<>();
+        list.add(CommonApi.getDefaultSource());
+        list.add(HanguoMH.getDefaultSource());
         list.add(IKanman.getDefaultSource());
         list.add(Dmzj.getDefaultSource());
         list.add(HHAAZZ.getDefaultSource());
@@ -61,7 +63,6 @@ public class UpdateHelper {
         list.add(U17.getDefaultSource());
         list.add(DM5.getDefaultSource());
         list.add(Webtoon.getDefaultSource());
-        //list.add(HHSSEE.getDefaultSource());
         list.add(MH57.getDefaultSource());
         list.add(MH50.getDefaultSource());
         list.add(Dmzjv2.getDefaultSource());
@@ -82,7 +83,6 @@ public class UpdateHelper {
         list.add(BaiNian.getDefaultSource());
         list.add(TuHao.getDefaultSource());
         list.add(SixMH.getDefaultSource());
-        list.add(MangaBZ.getDefaultSource());
         list.add(ManHuaDB.getDefaultSource());
         list.add(Manhuatai.getDefaultSource());
         list.add(GuFeng.getDefaultSource());

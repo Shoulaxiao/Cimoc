@@ -1,5 +1,6 @@
 package com.haleydu.cimoc.presenter;
 
+import com.haleydu.cimoc.BuildConfig;
 import com.haleydu.cimoc.core.Manga;
 import com.haleydu.cimoc.manager.SourceManager;
 import com.haleydu.cimoc.model.Comic;
@@ -7,7 +8,9 @@ import com.haleydu.cimoc.model.Source;
 import com.haleydu.cimoc.parser.Parser;
 import com.haleydu.cimoc.ui.view.ResultView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
@@ -23,6 +26,7 @@ public class ResultPresenter extends BasePresenter<ResultView> {
     private static final int STATE_DONE = 3;
     private SourceManager mSourceManager;
     private State[] mStateArray;
+    private Map<Integer, State> mStateMap;
     private String keyword;
     private boolean strictSearch;
     private int error = 0;
@@ -47,11 +51,13 @@ public class ResultPresenter extends BasePresenter<ResultView> {
 
     private void initStateArray(int[] source) {
         mStateArray = new State[source.length];
+        mStateMap = new HashMap<>();
         for (int i = 0; i != mStateArray.length; ++i) {
             mStateArray[i] = new State();
             mStateArray[i].source = source[i];
             mStateArray[i].page = 0;
             mStateArray[i].state = STATE_NULL;
+            mStateMap.put(source[i], mStateArray[i]);
         }
     }
 
@@ -112,35 +118,46 @@ public class ResultPresenter extends BasePresenter<ResultView> {
             mBaseView.onSearchError();
             return;
         }
+
+        // DEBUG
+        if (mStateMap.get(BuildConfig.SOURCE) != null) {
+            State obj = mStateMap.get(BuildConfig.SOURCE);
+            doSearch(obj,1);
+            return;
+        }
         for (final State obj : mStateArray) {
-            if (obj.state == STATE_NULL) {
-                Parser parser = mSourceManager.getParser(obj.source);
-                obj.state = STATE_DOING;
-                mCompositeSubscription.add(Manga.getSearchResult(parser, keyword, ++obj.page, strictSearch)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Action1<Comic>() {
-                            @Override
-                            public void call(Comic comic) {
-                                mBaseView.onSearchSuccess(comic);
-                            }
-                        }, new Action1<Throwable>() {
-                            @Override
-                            public void call(Throwable throwable) {
-                                throwable.printStackTrace();
-                                if (obj.page == 1) {
-                                    obj.state = STATE_DONE;
-                                    if (++error == mStateArray.length) {
-                                        mBaseView.onSearchError();
-                                    }
+            doSearch(obj, mStateArray.length);
+        }
+    }
+
+    private void doSearch(State obj,int sourNum) {
+        if (obj.state == STATE_NULL) {
+            Parser parser = mSourceManager.getParser(obj.source);
+            obj.state = STATE_DOING;
+            mCompositeSubscription.add(Manga.getSearchResult(parser, keyword, ++obj.page, strictSearch)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<Comic>() {
+                        @Override
+                        public void call(Comic comic) {
+                            mBaseView.onSearchSuccess(comic);
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            throwable.printStackTrace();
+                            if (obj.page == 1) {
+                                obj.state = STATE_DONE;
+                                if (++error == sourNum) {
+                                    mBaseView.onSearchError();
                                 }
                             }
-                        }, new Action0() {
-                            @Override
-                            public void call() {
-                                obj.state = STATE_NULL;
-                            }
-                        }));
-            }
+                        }
+                    }, new Action0() {
+                        @Override
+                        public void call() {
+                            obj.state = STATE_NULL;
+                        }
+                    }));
         }
     }
 
