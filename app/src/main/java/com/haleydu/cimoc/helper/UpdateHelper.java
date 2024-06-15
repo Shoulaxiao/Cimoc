@@ -56,6 +56,7 @@ public class UpdateHelper {
         List<Source> list = new ArrayList<>();
         list.add(CommonApi.getDefaultSource());
         list.add(HanguoMH.getDefaultSource());
+        list.add(MiaoQuMH.getDefaultSource());
         list.add(IKanman.getDefaultSource());
         list.add(Dmzj.getDefaultSource());
         list.add(HHAAZZ.getDefaultSource());

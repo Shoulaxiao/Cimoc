@@ -28,6 +28,7 @@ public enum SourceEnum {
 
     BaiNian(13,"百年漫画"),
     HanguoMH(14,"韩国漫画"),
+    MiaoQuMH(15,"喵趣漫画"),
     CCMH(23,"CC漫画"),
     TuHao(24,"土豪漫画"),
     GuFeng(25,"古风漫画"),

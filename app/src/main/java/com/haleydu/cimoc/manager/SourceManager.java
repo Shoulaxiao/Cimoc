@@ -221,6 +221,9 @@ public class SourceManager {
                 case HanguoMH:
                     parser = new HanguoMH(source);
                     break;
+                case MiaoQuMH:
+                    parser = new MiaoQuMH(source);
+                    break;
                 default:
                     parser = new Null();
                     break;
