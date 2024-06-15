@@ -1,5 +1,7 @@
 package com.haleydu.cimoc.utils;
 
+import com.haleydu.cimoc.model.SearchHistory;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,4 +36,10 @@ public class CollectionUtils {
         return result;
     }
 
+    public static <T> boolean isEmpty(List<T> list) {
+        if ( list == null){
+            return true;
+        }
+        return list.isEmpty();
+    }
 }

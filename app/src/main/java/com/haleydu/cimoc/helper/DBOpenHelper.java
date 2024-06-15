@@ -8,6 +8,8 @@ import com.haleydu.cimoc.model.ChapterDao;
 import com.haleydu.cimoc.model.ComicDao;
 import com.haleydu.cimoc.model.DaoMaster;
 import com.haleydu.cimoc.model.ImageUrlDao;
+import com.haleydu.cimoc.model.SearchHistory;
+import com.haleydu.cimoc.model.SearchHistoryDao;
 import com.haleydu.cimoc.model.SourceDao;
 import com.haleydu.cimoc.model.TagDao;
 import com.haleydu.cimoc.model.TagRefDao;
@@ -63,6 +65,8 @@ public class DBOpenHelper extends DaoMaster.OpenHelper {
                 ImageUrlDao.createTable(db, true);
             case 11:
                 updateChapter(db);
+            case 12:
+                SearchHistoryDao.createTable(db, false);
 
         }
     }

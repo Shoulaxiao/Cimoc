@@ -57,6 +57,13 @@
                 android:textColor="@color/white"
                 android:textSize="14sp" />
         </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_history_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

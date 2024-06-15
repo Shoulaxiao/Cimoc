@@ -1,6 +1,7 @@
 package com.haleydu.cimoc.ui.view;
 
 import com.haleydu.cimoc.component.DialogCaller;
+import com.haleydu.cimoc.model.SearchHistory;
 import com.haleydu.cimoc.model.Source;
 
 import java.util.List;
@@ -16,5 +17,10 @@ public interface SearchView extends BaseView, DialogCaller {
     void onSourceLoadFail();
 
     void onAutoCompleteLoadSuccess(List<String> list);
+
+
+    void onHistoryLoadSuccess(List<SearchHistory> list);
+
+    void onHistoryLoadFail(Throwable throwable);
 
 }

@@ -2,12 +2,20 @@ package com.haleydu.cimoc.ui.activity;
 
 import android.os.Bundle;
 
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
+
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,12 +27,13 @@ import android.widget.TextView;
 import com.haleydu.cimoc.R;
 import com.haleydu.cimoc.manager.PreferenceManager;
 import com.haleydu.cimoc.misc.Switcher;
+import com.haleydu.cimoc.model.SearchHistory;
 import com.haleydu.cimoc.model.Source;
 import com.haleydu.cimoc.presenter.BasePresenter;
 import com.haleydu.cimoc.presenter.SearchPresenter;
 import com.haleydu.cimoc.ui.adapter.AutoCompleteAdapter;
+import com.haleydu.cimoc.ui.adapter.SearchHistoryAdapter;
 import com.haleydu.cimoc.ui.fragment.dialog.MultiAdpaterDialogFragment;
-import com.haleydu.cimoc.ui.fragment.dialog.MultiDialogFragment;
 import com.haleydu.cimoc.ui.view.SearchView;
 import com.haleydu.cimoc.utils.CollectionUtils;
 import com.haleydu.cimoc.utils.HintUtils;
@@ -52,12 +61,19 @@ public class SearchActivity extends BackActivity implements SearchView, TextView
     FloatingActionButton mActionButton;
     @BindView(R.id.search_strict_checkbox)
     AppCompatCheckBox mCheckBox;
+    @BindView(R.id.search_history_recycler_view)
+    RecyclerView historyRecyclerView;
 
     private ArrayAdapter<String> mArrayAdapter;
 
     private SearchPresenter mPresenter;
     private List<Switcher<Source>> mSourceList;
     private boolean mAutoComplete;
+
+    private FlexboxLayoutManager layoutManager;
+
+    private SearchHistoryAdapter mSearchHistoryAdapter;
+
 
     @Override
     protected BasePresenter initPresenter() {
@@ -69,6 +85,15 @@ public class SearchActivity extends BackActivity implements SearchView, TextView
     @Override
     protected void initView() {
         mAutoComplete = mPreference.getBoolean(PreferenceManager.PREF_SEARCH_AUTO_COMPLETE, false);
+        layoutManager = new FlexboxLayoutManager(this);
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setFlexWrap(FlexWrap.WRAP);
+        layoutManager.setAlignItems(AlignItems.STRETCH);
+
+        mSearchHistoryAdapter = new SearchHistoryAdapter(this, new ArrayList<>());
+        historyRecyclerView.setLayoutManager(layoutManager);
+        historyRecyclerView.addItemDecoration(mSearchHistoryAdapter.getItemDecoration());
+        historyRecyclerView.setAdapter(mSearchHistoryAdapter);
         mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -107,6 +132,7 @@ public class SearchActivity extends BackActivity implements SearchView, TextView
     @Override
     protected void initData() {
         mSourceList = new ArrayList<>();
+        // 加载图源
         mPresenter.loadSource();
     }
 
@@ -115,6 +141,7 @@ public class SearchActivity extends BackActivity implements SearchView, TextView
         getMenuInflater().inflate(R.menu.menu_search, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -164,6 +191,8 @@ public class SearchActivity extends BackActivity implements SearchView, TextView
     @OnClick(R.id.search_action_button)
     void onSearchButtonClick() {
         String keyword = mEditText.getText().toString();
+        mPresenter.insertSearchHistory(keyword);
+
         Boolean strictSearch = mCheckBox.isChecked();
         if (StringUtils.isEmpty(keyword)) {
             mInputLayout.setError(getString(R.string.search_keyword_empty));
@@ -181,6 +210,13 @@ public class SearchActivity extends BackActivity implements SearchView, TextView
                         CollectionUtils.unbox(list), ResultActivity.LAUNCH_MODE_SEARCH));
             }
         }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.loadSearchHistory();
     }
 
     @Override
@@ -218,4 +254,13 @@ public class SearchActivity extends BackActivity implements SearchView, TextView
         return true;
     }
 
+    @Override
+    public void onHistoryLoadSuccess(List<SearchHistory> list) {
+        mSearchHistoryAdapter.addAll(list);
+    }
+
+    @Override
+    public void onHistoryLoadFail(Throwable throwable) {
+        Log.d("",throwable.getMessage());
+    }
 }
