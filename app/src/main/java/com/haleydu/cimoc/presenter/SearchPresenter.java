@@ -4,6 +4,7 @@ import com.haleydu.cimoc.core.Manga;
 import com.haleydu.cimoc.manager.HistorySearchManager;
 import com.haleydu.cimoc.manager.SourceManager;
 import com.haleydu.cimoc.ui.view.SearchView;
+import com.haleydu.cimoc.utils.StringUtils;
 
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -37,15 +38,18 @@ public class SearchPresenter extends BasePresenter<SearchView> {
 
 
     public void loadSearchHistory() {
-        mCompositeSubscription.add(mHistorySearchManager.listEnableInRx()
+        mCompositeSubscription.add(mHistorySearchManager.listHistoryInRx()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(list -> mBaseView.onHistoryLoadSuccess(list), throwable -> mBaseView.onHistoryLoadFail(throwable)));
 
     }
 
 
-    public void insertSearchHistory(String keyword) {
-        mHistorySearchManager.insert(keyword);
+    public void insertOrUpdateSearchHistory(String keyword) {
+        if (StringUtils.isEmpty(keyword)){
+            return;
+        }
+        mHistorySearchManager.insertOrUpdate(keyword);
     }
 
 }

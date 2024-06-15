@@ -32,6 +32,7 @@ import com.haleydu.cimoc.model.Source;
 import com.haleydu.cimoc.presenter.BasePresenter;
 import com.haleydu.cimoc.presenter.SearchPresenter;
 import com.haleydu.cimoc.ui.adapter.AutoCompleteAdapter;
+import com.haleydu.cimoc.ui.adapter.BaseAdapter;
 import com.haleydu.cimoc.ui.adapter.SearchHistoryAdapter;
 import com.haleydu.cimoc.ui.fragment.dialog.MultiAdpaterDialogFragment;
 import com.haleydu.cimoc.ui.view.SearchView;
@@ -49,7 +50,7 @@ import butterknife.OnClick;
  * Created by Hiroshi on 2016/10/11.
  */
 
-public class SearchActivity extends BackActivity implements SearchView, TextView.OnEditorActionListener {
+public class SearchActivity extends BackActivity implements SearchView, TextView.OnEditorActionListener, BaseAdapter.OnItemClickListener {
 
     private final static int DIALOG_REQUEST_SOURCE = 0;
 
@@ -91,6 +92,7 @@ public class SearchActivity extends BackActivity implements SearchView, TextView
         layoutManager.setAlignItems(AlignItems.STRETCH);
 
         mSearchHistoryAdapter = new SearchHistoryAdapter(this, new ArrayList<>());
+        mSearchHistoryAdapter.setOnItemClickListener(this);
         historyRecyclerView.setLayoutManager(layoutManager);
         historyRecyclerView.addItemDecoration(mSearchHistoryAdapter.getItemDecoration());
         historyRecyclerView.setAdapter(mSearchHistoryAdapter);
@@ -191,24 +193,28 @@ public class SearchActivity extends BackActivity implements SearchView, TextView
     @OnClick(R.id.search_action_button)
     void onSearchButtonClick() {
         String keyword = mEditText.getText().toString();
-        mPresenter.insertSearchHistory(keyword);
+        mPresenter.insertOrUpdateSearchHistory(keyword);
 
         Boolean strictSearch = mCheckBox.isChecked();
         if (StringUtils.isEmpty(keyword)) {
             mInputLayout.setError(getString(R.string.search_keyword_empty));
         } else {
-            ArrayList<Integer> list = new ArrayList<>();
-            for (Switcher<Source> switcher : mSourceList) {
-                if (switcher.isEnable()) {
-                    list.add(switcher.getElement().getType());
-                }
+            goToSearch(keyword, strictSearch);
+        }
+    }
+
+    private void goToSearch(String keyword, boolean strictSearch) {
+        ArrayList<Integer> list = new ArrayList<>();
+        for (Switcher<Source> switcher : mSourceList) {
+            if (switcher.isEnable()) {
+                list.add(switcher.getElement().getType());
             }
-            if (list.isEmpty()) {
-                HintUtils.showToast(this, R.string.search_source_none);
-            } else {
-                startActivity(ResultActivity.createIntent(this, keyword, strictSearch,
-                        CollectionUtils.unbox(list), ResultActivity.LAUNCH_MODE_SEARCH));
-            }
+        }
+        if (list.isEmpty()) {
+            HintUtils.showToast(this, R.string.search_source_none);
+        } else {
+            startActivity(ResultActivity.createIntent(this, keyword, strictSearch,
+                    CollectionUtils.unbox(list), ResultActivity.LAUNCH_MODE_SEARCH));
         }
     }
 
@@ -256,11 +262,21 @@ public class SearchActivity extends BackActivity implements SearchView, TextView
 
     @Override
     public void onHistoryLoadSuccess(List<SearchHistory> list) {
+        mSearchHistoryAdapter.clear();
         mSearchHistoryAdapter.addAll(list);
     }
 
     @Override
     public void onHistoryLoadFail(Throwable throwable) {
-        Log.d("",throwable.getMessage());
+        Log.d("", throwable.getMessage());
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        SearchHistory item = mSearchHistoryAdapter.getItem(position);
+        mPresenter.insertOrUpdateSearchHistory(item.getKeyword());
+
+        goToSearch(item.getKeyword(), true);
+
     }
 }

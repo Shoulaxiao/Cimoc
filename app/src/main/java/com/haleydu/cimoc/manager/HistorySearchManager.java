@@ -36,16 +36,16 @@ public class HistorySearchManager {
         return mInstance;
     }
 
-    public Observable<List<SearchHistory>> listEnableInRx() {
+    public Observable<List<SearchHistory>> listHistoryInRx() {
         return mSearchHistoryDao.queryBuilder()
                 .where(SearchHistoryDao.Properties.Keyword.isNotNull())
                 .orderDesc(SearchHistoryDao.Properties.CreateTime)
-                .limit(10)
+                .limit(20)
                 .rx()
                 .list();
     }
 
-    public Long insert(String keyword) {
+    public Long insertOrUpdate(String keyword) {
         List<SearchHistory> list = mSearchHistoryDao.queryBuilder().where(SearchHistoryDao.Properties.Keyword.eq(keyword))
                 .list();
         if (CollectionUtils.isEmpty(list)) {
@@ -53,6 +53,11 @@ public class HistorySearchManager {
             searchHistory.setKeyword(keyword);
             searchHistory.setCreateTime(System.currentTimeMillis());
             return mSearchHistoryDao.insert(searchHistory);
+        }else {
+            SearchHistory searchHistory = list.get(0);
+            searchHistory.setCreateTime(System.currentTimeMillis());
+            // 更新时间
+            mSearchHistoryDao.update(searchHistory);
         }
         return 0L;
     }

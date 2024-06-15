@@ -28,4 +28,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="trans_black">#B0000000</color>
     <color name="trans_light_black">#4F000000</color>
+
+    <color name="colorPrimaryLight">#f4f5f7</color>
+    <color name="colorPrimaryLightDark">#ecedf1</color>
 </resources>
