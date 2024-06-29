@@ -5,7 +5,7 @@ apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.huawei.agconnect'
 
-def buildVersion = 331
+def buildVersion = 332
 def version = "v1.5.2"
 
 def cmdGetTagname = 'git describe --tags'
@@ -70,7 +70,6 @@ android {
             shrinkResources false
             zipAlignEnabled false
             signingConfig signingConfigs.debug
-            buildConfigField("Integer", "SOURCE", "15")
         }
 
         android.applicationVariants.all { variant ->

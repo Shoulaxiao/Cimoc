@@ -1,6 +1,5 @@
 package com.haleydu.cimoc.presenter;
 
-import com.haleydu.cimoc.BuildConfig;
 import com.haleydu.cimoc.core.Manga;
 import com.haleydu.cimoc.manager.SourceManager;
 import com.haleydu.cimoc.model.Comic;
@@ -116,13 +115,6 @@ public class ResultPresenter extends BasePresenter<ResultView> {
     public void loadSearch() {
         if (mStateArray.length == 0) {
             mBaseView.onSearchError();
-            return;
-        }
-
-        // DEBUG
-        if (mStateMap.get(BuildConfig.SOURCE) != null) {
-            State obj = mStateMap.get(BuildConfig.SOURCE);
-            doSearch(obj,1);
             return;
         }
         for (final State obj : mStateArray) {

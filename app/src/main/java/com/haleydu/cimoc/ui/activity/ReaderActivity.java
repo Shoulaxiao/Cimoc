@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.os.Build;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -66,6 +68,8 @@ import butterknife.OnClick;
 public abstract class ReaderActivity extends BaseActivity implements OnTapGestureListener,
         OnProgressChangeListener, OnLazyLoadListener, ReaderView {
 
+
+    private final static String TAG = "ReaderActivity";
     protected PreCacheLayoutManager mLayoutManager;
     protected ReaderAdapter mReaderAdapter;
     protected ImagePipelineFactory mImagePipelineFactory;
@@ -576,6 +580,7 @@ public abstract class ReaderActivity extends BaseActivity implements OnTapGestur
 
     @Override
     public void onLongPress(float x, float y) {
+        Log.d(TAG, String.format("onLongPress: x=%f,y=%f", x, y));
         doClickEvent(getValue(x, y, true));
     }
 
@@ -584,6 +589,7 @@ public abstract class ReaderActivity extends BaseActivity implements OnTapGestur
         getWindowManager().getDefaultDisplay().getSize(point);
         int position = getCurPosition();
         if (position == -1) {
+            // 获取可视位置的第一个元素所在索引
             position = mLayoutManager.findFirstVisibleItemPosition();
         }
         RetryDraweeView draweeView = ((ReaderAdapter.ImageHolder)

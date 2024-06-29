@@ -4,9 +4,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.RectF;
+
 import androidx.annotation.NonNull;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.core.view.MotionEventCompat;
+
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -33,7 +35,10 @@ public class PhotoDraweeView extends RetryDraweeView implements OnScaleDragGestu
     private static final int EDGE_BOTH = 2;
     private final RectF mDisplayRect = new RectF();
     private final Matrix mMatrix = new Matrix();
+
+    // 缩放拖拽识别
     private ScaleDragDetector mScaleDragDetector;
+    // 手势检测识别
     private GestureDetectorCompat mGestureDetector;
     private OnTapGestureListener mTapGestureListener;
     private boolean mBlockParentIntercept = false;
@@ -69,8 +74,11 @@ public class PhotoDraweeView extends RetryDraweeView implements OnScaleDragGestu
     }
 
     protected void init() {
+        // 设置图片按照FIT_CENTER方式进行缩放并居中显示
         getHierarchy().setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER);
         mScaleDragDetector = new ScaleDragDetector(getContext(), this);
+
+        // 初始化并设置监听
         mGestureDetector = new GestureDetectorCompat(getContext(), new GestureDetector.SimpleOnGestureListener() {
             @Override
             public void onLongPress(MotionEvent e) {
@@ -84,11 +92,13 @@ public class PhotoDraweeView extends RetryDraweeView implements OnScaleDragGestu
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int action = MotionEventCompat.getActionMasked(event);
+        //直接使用 event.getAction() 可能会导致在某些早期 Android 版本上的兼容性问题，因为随着 Android 系统的发展，动作类型可能存储在不同的位上。getActionMasked() 方法则会处理这些兼容性问题
+        int action = event.getActionMasked();
         ViewParent parent = getParent();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 if (parent != null) {
+                    // 当用户按下屏幕时，父View不要拦截触摸事件
                     parent.requestDisallowInterceptTouchEvent(true);
                 }
                 cancelFling();
@@ -96,6 +106,7 @@ public class PhotoDraweeView extends RetryDraweeView implements OnScaleDragGestu
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 if (parent != null) {
+                    //它可以按照正常规则来考虑是否需要拦截触摸事件。
                     parent.requestDisallowInterceptTouchEvent(false);
                 }
                 break;
@@ -103,7 +114,7 @@ public class PhotoDraweeView extends RetryDraweeView implements OnScaleDragGestu
 
         boolean wasScaling = mScaleDragDetector.isScaling();
         boolean wasDragging = mScaleDragDetector.isDragging();
-
+        // 处理触摸事件
         mScaleDragDetector.onTouchEvent(event);
 
         boolean noScale = !wasScaling && !mScaleDragDetector.isScaling();
@@ -125,7 +136,7 @@ public class PhotoDraweeView extends RetryDraweeView implements OnScaleDragGestu
 
     public void update(Long id) {
         Object tag = getTag();
-        if (tag == null || !tag.equals(id) ) {
+        if (tag == null || !tag.equals(id)) {
             setTag(id);
             resetMatrix();
         }
@@ -140,10 +151,16 @@ public class PhotoDraweeView extends RetryDraweeView implements OnScaleDragGestu
         return false;
     }
 
+    /**
+     * 处理双击屏幕
+     * @param event
+     * @return
+     */
     @Override
     public boolean onDoubleTap(MotionEvent event) {
         if (isDoubleTap) {
             try {
+                // 计算放大倍数
                 float scale = ViewUtils.calculateScale(mMatrix);
                 float x = event.getX();
                 float y = event.getY();

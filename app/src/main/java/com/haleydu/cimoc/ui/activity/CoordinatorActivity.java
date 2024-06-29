@@ -5,6 +5,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.haleydu.cimoc.R;
 import com.haleydu.cimoc.ui.adapter.BaseAdapter;
@@ -24,6 +25,8 @@ public abstract class CoordinatorActivity extends BackActivity implements
     FloatingActionButton mActionButton2;
     @BindView(R.id.coordinator_recycler_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.errorMsg)
+    TextView textView;
     @BindView(R.id.coordinator_layout)
     CoordinatorLayout mLayoutView;
 

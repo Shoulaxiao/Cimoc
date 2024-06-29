@@ -341,7 +341,15 @@ public class Manga {
     }
 
     public static class ParseErrorException extends Exception {
+        public ParseErrorException() {
+        }
+
+        public ParseErrorException(String message) {
+            super(message);
+        }
     }
+
+
 
     public static class NetworkErrorException extends Exception {
     }

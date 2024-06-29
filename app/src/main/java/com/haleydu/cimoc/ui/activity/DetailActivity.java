@@ -333,6 +333,7 @@ public class DetailActivity extends CoordinatorActivity implements DetailView {
     @Override
     public void onChapterLoadSuccess(List<Chapter> list) {
         hideProgressBar();
+        textView.setVisibility(View.GONE);
         if (mPresenter.getComic().getTitle() != null && mPresenter.getComic().getCover() != null) {
             mDetailAdapter.clear();
             mDetailAdapter.addAll(list);
@@ -352,6 +353,7 @@ public class DetailActivity extends CoordinatorActivity implements DetailView {
     @Override
     public void onPreLoadSuccess(List<Chapter> list, Comic comic) {
         hideProgressBar();
+        textView.setVisibility(View.GONE);
         if (isReverseOrder(comic)){
             mDetailAdapter.addAll(Lists.reverse(list));
         }else {
@@ -387,6 +389,23 @@ public class DetailActivity extends CoordinatorActivity implements DetailView {
         showSnackbar(R.string.common_parse_error);
 
 
+    }
+
+    @Override
+    public void onParseError(String error) {
+        if(App.getPreferenceManager().getBoolean(PreferenceManager.PREF_OTHER_FIREBASE_EVENT, true)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.CONTENT, mPresenter.getComic().getTitle());
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Title");
+            bundle.putInt(FirebaseAnalytics.Param.SOURCE, mPresenter.getComic().getSource());
+            bundle.putBoolean(FirebaseAnalytics.Param.SUCCESS, false);
+            FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
+        }
+        hideProgressBar();
+        textView.setText(error);
+        textView.setVisibility(View.VISIBLE);
+        showSnackbar(R.string.common_parse_error);
     }
 
     private void increment() {

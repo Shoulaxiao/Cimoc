@@ -94,6 +94,7 @@ public class ReaderAdapter extends BaseAdapter<ImageUrl> {
                 mLargeControllerSupplier.get() : mControllerSupplier.get();
         switch (reader) {
             case READER_PAGE:
+                // 分页读取模式
                 ((PhotoDraweeView) draweeView).setTapListenerListener(mTapGestureListener);
                 ((PhotoDraweeView) draweeView).setAlwaysBlockParent(isBanTurn);
                 ((PhotoDraweeView) draweeView).setDoubleTap(isDoubleTap);
@@ -111,6 +112,7 @@ public class ReaderAdapter extends BaseAdapter<ImageUrl> {
                 });
                 break;
             case READER_STREAM:
+                // 瀑布流读模式
                 builder.setControllerListener(new BaseControllerListener<ImageInfo>() {
                     @Override
                     public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {

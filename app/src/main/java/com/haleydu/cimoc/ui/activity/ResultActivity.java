@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.SparseArray;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -22,6 +24,7 @@ import com.haleydu.cimoc.presenter.BasePresenter;
 import com.haleydu.cimoc.presenter.ResultPresenter;
 import com.haleydu.cimoc.ui.adapter.BaseAdapter;
 import com.haleydu.cimoc.ui.adapter.ResultAdapter;
+import com.haleydu.cimoc.ui.fragment.dialog.MultiAdpaterDialogFragment;
 import com.haleydu.cimoc.ui.view.ResultView;
 
 import java.util.LinkedList;
@@ -153,6 +156,11 @@ public class ResultActivity extends BackActivity implements ResultView, BaseAdap
         }
     }
 
+    /**
+     * 点击事件
+     * @param view
+     * @param position
+     */
     @Override
     public void onItemClick(View view, int position) {
         Comic comic = mResultAdapter.getItem(position);
@@ -179,6 +187,7 @@ public class ResultActivity extends BackActivity implements ResultView, BaseAdap
     @Override
     public void onLoadSuccess(List<Comic> list) {
         hideProgressBar();
+
         mResultAdapter.addAll(list);
     }
 
@@ -223,4 +232,31 @@ public class ResultActivity extends BackActivity implements ResultView, BaseAdap
         return true;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // 过滤按钮
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search_menu_source:
+//                if (!mSourceList.isEmpty()) {
+//                    int size = mSourceList.size();
+//                    String[] arr1 = new String[size];
+//                    boolean[] arr2 = new boolean[size];
+//                    for (int i = 0; i < size; ++i) {
+//                        arr1[i] = mSourceList.get(i).getElement().getTitle();
+//                        arr2[i] = mSourceList.get(i).isEnable();
+//                    }
+//                    MultiAdpaterDialogFragment fragment =
+//                            MultiAdpaterDialogFragment.newInstance(R.string.search_source_select, arr1, arr2, DIALOG_REQUEST_SOURCE);
+//                    fragment.show(getSupportFragmentManager(), null);
+//                    break;
+//                }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

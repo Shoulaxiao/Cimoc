@@ -157,7 +157,7 @@ public class DetailPresenter extends BasePresenter<DetailView> {
                     @Override
                     public void call(Throwable throwable) {
                         mBaseView.onComicLoadSuccess(mComic);
-                        mBaseView.onParseError();
+                        mBaseView.onParseError(throwable.getMessage());
                     }
                 }));
     }

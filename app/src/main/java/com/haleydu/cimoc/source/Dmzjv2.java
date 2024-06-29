@@ -3,6 +3,7 @@ package com.haleydu.cimoc.source;
 import android.util.Log;
 import android.util.Pair;
 
+import com.haleydu.cimoc.core.Manga;
 import com.haleydu.cimoc.model.Chapter;
 import com.haleydu.cimoc.model.Comic;
 import com.haleydu.cimoc.model.ImageUrl;
@@ -22,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -118,7 +120,7 @@ public class Dmzjv2 extends MangaParser {
     }
 
     @Override
-    public List<Chapter> parseChapter(String html, Comic comic, Long sourceComic) {
+    public List<Chapter> parseChapter(String html, Comic comic, Long sourceComic) throws Manga.ParseErrorException {
         List<Chapter> list = new LinkedList<>();
         try {
             String JsonArrayString = StringUtils.match("initIntroData\\((.*)\\);", html, 1);
@@ -141,6 +143,7 @@ public class Dmzjv2 extends MangaParser {
 
         } catch (Exception e) {
             e.printStackTrace();
+            throw new Manga.ParseErrorException(html);
         }
         return list;
     }
